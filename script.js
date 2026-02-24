@@ -64,12 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     animatedElements.forEach(el => observer.observe(el));
 
-    // --- 4. MEDIA CAROUSEL --- //
-    const track = document.querySelector('.carousel-track');
-    if (track) {
+    // --- 4. MULTIPLE MEDIA CAROUSELS --- //
+    const carousels = document.querySelectorAll('.carousel-container');
+    
+    carousels.forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        if (!track) return;
+        
         const slides = Array.from(track.children);
-        const nextButton = document.querySelector('.next-btn');
-        const prevButton = document.querySelector('.prev-btn');
+        const nextButton = carousel.querySelector('.next-btn');
+        const prevButton = carousel.querySelector('.prev-btn');
         let currentIndex = 0;
 
         // Number of items visible based on window width
@@ -80,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const updateCarousel = () => {
+            if (slides.length === 0) return;
             const visibleItems = getVisibleItems();
             const slideWidth = slides[0].getBoundingClientRect().width;
 
@@ -96,23 +101,28 @@ document.addEventListener('DOMContentLoaded', () => {
             track.style.transform = `translateX(${amountToMove}px)`;
         };
 
-        nextButton.addEventListener('click', () => {
-            const maxIndex = Math.max(0, slides.length - getVisibleItems());
-            if (currentIndex < maxIndex) {
-                currentIndex++;
-                updateCarousel();
-            }
-        });
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                const maxIndex = Math.max(0, slides.length - getVisibleItems());
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+        }
 
-        prevButton.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateCarousel();
-            }
-        });
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+        }
 
-        // Update if the window changes size
+        // Initialize state
+        updateCarousel();
         window.addEventListener('resize', updateCarousel);
-    }
+    });
 
 });

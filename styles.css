@@ -108,35 +108,39 @@ ul {
 }
 
 .bg-primary {
-    background-color: var(--primary);
-    color: white;
+    background-color: var(--primary) !important;
+    color: white !important;
 }
 
 .bg-secondary {
-    background-color: var(--secondary);
-    color: white;
+    background-color: var(--secondary) !important;
+    color: white !important;
 }
 
 .bg-accent {
-    background-color: var(--accent);
-    color: white;
+    background-color: var(--accent) !important;
+    color: white !important;
 }
 
 .bg-yellow {
-    background-color: var(--yellow);
-    color: var(--text-main);
+    background-color: var(--yellow) !important;
+    color: var(--text-main) !important;
 }
 
 .color-yellow {
-    background-color: var(--yellow);
+    background-color: var(--yellow) !important;
 }
 
 .color-cyan {
-    background-color: var(--cyan);
+    background-color: var(--cyan) !important;
+}
+
+.color-primary {
+    background-color: var(--primary) !important;
 }
 
 .color-secondary {
-    background-color: var(--secondary);
+    background-color: var(--secondary) !important;
 }
 
 /* Placeholder Colors */
