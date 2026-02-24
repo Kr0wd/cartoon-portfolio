@@ -655,6 +655,14 @@ ul {
     flex-direction: column;
 }
 
+.media-img {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    border: var(--border-width) solid var(--border-color);
+}
+
 .media-placeholder {
     height: 300px;
     border-radius: var(--border-radius-sm);
