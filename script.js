@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 4. MULTIPLE MEDIA CAROUSELS --- //
     const carousels = document.querySelectorAll('.carousel-container');
-    
+
     carousels.forEach(carousel => {
         const track = carousel.querySelector('.carousel-track');
         if (!track) return;
-        
+
         const slides = Array.from(track.children);
         const nextButton = carousel.querySelector('.next-btn');
         const prevButton = carousel.querySelector('.prev-btn');
@@ -106,8 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const maxIndex = Math.max(0, slides.length - getVisibleItems());
                 if (currentIndex < maxIndex) {
                     currentIndex++;
-                    updateCarousel();
+                } else {
+                    currentIndex = 0; // Loop back to start
                 }
+                updateCarousel();
             });
         }
 
@@ -115,8 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
             prevButton.addEventListener('click', () => {
                 if (currentIndex > 0) {
                     currentIndex--;
-                    updateCarousel();
+                } else {
+                    const maxIndex = Math.max(0, slides.length - getVisibleItems());
+                    currentIndex = maxIndex; // Loop to end
                 }
+                updateCarousel();
             });
         }
 
@@ -124,5 +129,51 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCarousel();
         window.addEventListener('resize', updateCarousel);
     });
+
+    // --- 5. IMAGE & VIDEO MODAL (LIGHTBOX) --- //
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalVideo = document.getElementById('modal-video');
+    const closeBtn = document.querySelector('.modal-close');
+
+    if (modal && modalImg && modalVideo && closeBtn) {
+        // Function to reset modal
+        const resetModal = () => {
+            modal.style.display = 'none';
+            modalImg.style.display = 'none';
+            modalImg.src = '';
+            modalVideo.style.display = 'none';
+            modalVideo.src = '';
+            modalVideo.pause();
+        };
+
+        // Change cursor to indicate clickability for all media
+        document.querySelectorAll('.media-img').forEach(media => {
+            media.style.cursor = 'pointer';
+            media.addEventListener('click', () => {
+                modal.style.display = 'block';
+
+                // Check if the clicked element is a video or image
+                if (media.tagName.toLowerCase() === 'video') {
+                    modalVideo.style.display = 'block';
+                    modalVideo.src = media.src;
+                    modalVideo.play();
+                } else {
+                    modalImg.style.display = 'block';
+                    modalImg.src = media.src;
+                }
+            });
+        });
+
+        // Close when clicking the close button
+        closeBtn.addEventListener('click', resetModal);
+
+        // Close when clicking outside the image/video
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.id === 'modal-content-wrapper') {
+                resetModal();
+            }
+        });
+    }
 
 });
